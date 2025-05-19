@@ -16,6 +16,7 @@ import GalleryProfilePage from "./pages/GalleryProfile";
 import GalleriesPage from "./pages/Galleries";
 import EventsPage from "./pages/Events";
 import ContactPage from "./pages/Contact";
+import ArtworkTransactionPage from "./pages/ArtworkTransaction";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/signup" element={<Signup />} />
           <Route path="/artworks" element={<ArtworksPage />} />
           <Route path="/artworks/:artworkId" element={<ArtworkDetailPage />} />
+          <Route path="/artworks/:artworkId/purchase" element={<ArtworkTransactionPage />} />
           <Route path="/artists" element={<ArtistsPage />} />
           <Route path="/artists/:artistId" element={<ArtistProfilePage />} />
           <Route path="/galleries" element={<GalleriesPage />} />
