@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -7,7 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Gallery, Instagram, Twitter, Facebook, MapPin, Briefcase } from "lucide-react";
+import { Store, Instagram, Twitter, Facebook, MapPin, Briefcase } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 
 // Mock data for demonstration
@@ -290,7 +289,7 @@ const ArtistProfilePage = () => {
                     <Card className="hover:shadow-lg transition-shadow p-4">
                       <div className="flex items-center gap-4">
                         <div className="p-3 rounded-full bg-gold-100">
-                          <Gallery className="h-6 w-6 text-gold-600" />
+                          <Store className="h-6 w-6 text-gold-600" />
                         </div>
                         <div>
                           <h3 className="font-medium">{gallery.name}</h3>
