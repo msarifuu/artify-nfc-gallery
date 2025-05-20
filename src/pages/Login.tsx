@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
@@ -28,6 +28,7 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -44,6 +45,11 @@ const Login = () => {
       title: "Login Successful",
       description: "Welcome back to Artify!",
     });
+    
+    // After successful login, navigate to the onboarding page
+    // In a real app, you might check if the user has already chosen a role
+    // and redirect directly to their dashboard if they have
+    navigate("/onboarding");
   };
 
   return (
