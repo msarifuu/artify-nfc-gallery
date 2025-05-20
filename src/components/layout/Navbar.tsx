@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Menu, X, User, LogIn, Bell, Inbox, LogOut } from "lucide-react";
@@ -90,24 +91,24 @@ const Navbar = () => {
           : "bg-transparent py-4"
       }`}
     >
-      <div className="container mx-auto px-4 md:px-6">
+      <div className="container mx-auto px-4 md:px-6 lg:px-8">
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-2xl font-bold bg-gradient-to-r from-amber-200 to-yellow-500 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-gold-300 to-gold-500 bg-clip-text text-transparent">
               Artify
             </span>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 to={item.path}
-                className={`text-sm font-medium transition-colors hover:text-amber-400 ${
+                className={`text-sm font-medium transition-colors hover:text-gold ${
                   location.pathname === item.path
-                    ? "text-amber-500"
+                    ? "text-gold"
                     : "text-foreground"
                 }`}
               >
@@ -119,17 +120,17 @@ const Navbar = () => {
           {/* Auth Buttons or User Menu - Desktop */}
           <div className="hidden md:flex items-center space-x-4">
             {isLoggedIn ? (
-              <div className="flex items-center space-x-2">
+              <div className="flex items-center space-x-3">
                 <Button variant="ghost" size="icon" asChild className="relative">
                   <Link to="/inbox">
-                    <Inbox className="h-5 w-5" />
-                    <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-amber-500"></span>
+                    <Inbox className="h-5 w-5 text-foreground hover:text-gold transition-colors" />
+                    <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-gold"></span>
                   </Link>
                 </Button>
                 <Button variant="ghost" size="icon" asChild className="relative">
                   <Link to="/notifications">
-                    <Bell className="h-5 w-5" />
-                    <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-amber-500"></span>
+                    <Bell className="h-5 w-5 text-foreground hover:text-gold transition-colors" />
+                    <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-gold"></span>
                   </Link>
                 </Button>
                 <UserMenu 
@@ -140,14 +141,14 @@ const Navbar = () => {
               </div>
             ) : (
               <>
-                <Button variant="outline" size="sm" asChild>
-                  <Link to="/login">
+                <Button variant="outline" size="sm" asChild className="border-gold/30 hover:border-gold hover:text-gold">
+                  <Link to="/login" className="flex items-center">
                     <LogIn className="mr-2 h-4 w-4" />
                     Login
                   </Link>
                 </Button>
-                <Button size="sm" className="bg-amber-500 hover:bg-amber-600" asChild>
-                  <Link to="/signup">
+                <Button size="sm" className="bg-gold hover:bg-gold-600 text-white" asChild>
+                  <Link to="/signup" className="flex items-center">
                     <User className="mr-2 h-4 w-4" />
                     Sign Up
                   </Link>
@@ -163,6 +164,7 @@ const Navbar = () => {
               size="icon"
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Toggle Menu"
+              className="hover:bg-gold/10 hover:text-gold"
             >
               {isOpen ? (
                 <X className="h-6 w-6" />
@@ -176,48 +178,48 @@ const Navbar = () => {
         {/* Mobile Menu */}
         {isOpen && (
           <div className="md:hidden mt-4 pb-4 animate-fade-in">
-            <div className="flex flex-col space-y-4">
+            <div className="flex flex-col space-y-3">
               {navItems.map((item) => (
                 <Link
                   key={item.name}
                   to={item.path}
-                  className={`text-sm font-medium px-3 py-2 rounded-md transition-colors hover:bg-muted ${
+                  className={`text-base font-medium px-3 py-2 rounded-md transition-colors hover:bg-gold/10 hover:text-gold ${
                     location.pathname === item.path
-                      ? "bg-muted text-amber-500"
+                      ? "bg-gold/10 text-gold"
                       : "text-foreground"
                   }`}
                 >
                   {item.name}
                 </Link>
               ))}
-              <div className="flex flex-col space-y-2 pt-4 border-t border-border">
+              <div className="flex flex-col space-y-3 pt-4 border-t border-border">
                 {isLoggedIn ? (
-                  <div className="flex flex-col space-y-2">
-                    <div className="flex justify-between items-center p-3">
+                  <div className="flex flex-col space-y-3">
+                    <div className="flex justify-between items-center p-3 bg-muted/30 rounded-lg">
                       <div className="flex items-center">
-                        <Avatar className="w-8 h-8 mr-3">
+                        <Avatar className="w-10 h-10 mr-3 border-2 border-gold/20">
                           <AvatarImage src="/placeholder.svg" alt={userName} />
-                          <AvatarFallback>{userName.substring(0, 2).toUpperCase()}</AvatarFallback>
+                          <AvatarFallback className="bg-gold/20 text-gold-800">{userName.substring(0, 2).toUpperCase()}</AvatarFallback>
                         </Avatar>
                         <div>
-                          <p className="text-sm font-medium">{userName}</p>
-                          <p className="text-xs text-muted-foreground capitalize">{userRole}</p>
+                          <p className="text-base font-medium">{userName}</p>
+                          <p className="text-sm text-muted-foreground capitalize">{userRole}</p>
                         </div>
                       </div>
                     </div>
-                    <Button size="sm" variant="outline" className="justify-start" asChild>
+                    <Button size="sm" variant="outline" className="justify-start border-gold/30 hover:text-gold hover:border-gold" asChild>
                       <Link to="/inbox">
                         <Inbox className="mr-2 h-4 w-4" />
                         Messages
                       </Link>
                     </Button>
-                    <Button size="sm" variant="outline" className="justify-start" asChild>
+                    <Button size="sm" variant="outline" className="justify-start border-gold/30 hover:text-gold hover:border-gold" asChild>
                       <Link to="/notifications">
                         <Bell className="mr-2 h-4 w-4" />
                         Notifications
                       </Link>
                     </Button>
-                    <Button size="sm" variant="outline" className="justify-start" asChild>
+                    <Button size="sm" variant="outline" className="justify-start border-gold/30 hover:text-gold hover:border-gold" asChild>
                       <Link to={`/dashboard/${userRole}`}>
                         <User className="mr-2 h-4 w-4" />
                         Dashboard
@@ -235,13 +237,13 @@ const Navbar = () => {
                   </div>
                 ) : (
                   <>
-                    <Button variant="outline" size="sm" className="justify-start" asChild>
+                    <Button variant="outline" size="sm" className="justify-start border-gold/30 hover:text-gold hover:border-gold" asChild>
                       <Link to="/login">
                         <LogIn className="mr-2 h-4 w-4" />
                         Login
                       </Link>
                     </Button>
-                    <Button size="sm" className="bg-amber-500 hover:bg-amber-600 justify-start" asChild>
+                    <Button size="sm" className="justify-start bg-gold hover:bg-gold-600 text-white" asChild>
                       <Link to="/signup">
                         <User className="mr-2 h-4 w-4" />
                         Sign Up
