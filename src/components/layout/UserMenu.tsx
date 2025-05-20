@@ -98,9 +98,9 @@ const UserMenu = ({
           variant="ghost"
           className="flex items-center gap-2 px-2 py-1.5 hover:bg-muted focus:bg-muted"
         >
-          <Avatar className="h-8 w-8">
+          <Avatar className="h-8 w-8 border border-gold/20">
             <AvatarImage src="/placeholder.svg" alt={userName} />
-            <AvatarFallback>{getInitials(userName)}</AvatarFallback>
+            <AvatarFallback className="bg-gold/10 text-gold-800">{getInitials(userName)}</AvatarFallback>
           </Avatar>
           <div className="hidden md:block text-left">
             <p className="text-sm font-medium leading-none">{userName}</p>

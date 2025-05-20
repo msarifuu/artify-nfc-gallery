@@ -80,17 +80,17 @@ const DashboardHeader = ({ userRole = "viewer" }: DashboardHeaderProps) => {
       </div>
 
       <div className="flex items-center gap-4 ml-auto">
-        <Button variant="outline" size="icon" className="relative" asChild>
+        <Button variant="outline" size="icon" className="relative border-gold/30 hover:border-gold hover:text-gold" asChild>
           <Link to="/inbox">
             <Inbox className="h-4 w-4" />
-            <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-amber-500"></span>
+            <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-gold"></span>
           </Link>
         </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="icon" className="relative">
+            <Button variant="outline" size="icon" className="relative border-gold/30 hover:border-gold hover:text-gold">
               <Bell className="h-4 w-4" />
-              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-amber-500"></span>
+              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-gold"></span>
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-80">

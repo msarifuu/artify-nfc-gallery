@@ -95,7 +95,7 @@ const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center">
-            <span className="text-2xl font-bold bg-gradient-to-r from-gold-300 to-gold-500 bg-clip-text text-transparent">
+            <span className="text-2xl font-bold bg-gradient-to-r from-gold-400 to-gold-600 bg-clip-text text-transparent">
               Artify
             </span>
           </Link>
@@ -141,7 +141,7 @@ const Navbar = () => {
               </div>
             ) : (
               <>
-                <Button variant="outline" size="sm" asChild className="border-gold/30 hover:border-gold hover:text-gold">
+                <Button variant="outline" size="sm" asChild className="border-gold hover:bg-gold/10 hover:text-gold">
                   <Link to="/login" className="flex items-center">
                     <LogIn className="mr-2 h-4 w-4" />
                     Login
@@ -207,19 +207,19 @@ const Navbar = () => {
                         </div>
                       </div>
                     </div>
-                    <Button size="sm" variant="outline" className="justify-start border-gold/30 hover:text-gold hover:border-gold" asChild>
+                    <Button size="sm" variant="outline" className="justify-start border-gold hover:text-gold hover:border-gold" asChild>
                       <Link to="/inbox">
                         <Inbox className="mr-2 h-4 w-4" />
                         Messages
                       </Link>
                     </Button>
-                    <Button size="sm" variant="outline" className="justify-start border-gold/30 hover:text-gold hover:border-gold" asChild>
+                    <Button size="sm" variant="outline" className="justify-start border-gold hover:text-gold hover:border-gold" asChild>
                       <Link to="/notifications">
                         <Bell className="mr-2 h-4 w-4" />
                         Notifications
                       </Link>
                     </Button>
-                    <Button size="sm" variant="outline" className="justify-start border-gold/30 hover:text-gold hover:border-gold" asChild>
+                    <Button size="sm" variant="outline" className="justify-start border-gold hover:text-gold hover:border-gold" asChild>
                       <Link to={`/dashboard/${userRole}`}>
                         <User className="mr-2 h-4 w-4" />
                         Dashboard
@@ -237,7 +237,7 @@ const Navbar = () => {
                   </div>
                 ) : (
                   <>
-                    <Button variant="outline" size="sm" className="justify-start border-gold/30 hover:text-gold hover:border-gold" asChild>
+                    <Button variant="outline" size="sm" className="justify-start border-gold hover:text-gold hover:border-gold" asChild>
                       <Link to="/login">
                         <LogIn className="mr-2 h-4 w-4" />
                         Login
