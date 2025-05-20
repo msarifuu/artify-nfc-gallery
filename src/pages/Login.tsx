@@ -40,16 +40,29 @@ const Login = () => {
 
   const onSubmit = (data: LoginFormValues) => {
     console.log("Login attempt:", data);
-    // Simulate login - replace with actual authentication logic
+    
+    // Simulate successful login
     toast({
       title: "Login Successful",
       description: "Welcome back to Artify!",
     });
     
-    // After successful login, navigate to the onboarding page
-    // In a real app, you might check if the user has already chosen a role
-    // and redirect directly to their dashboard if they have
-    navigate("/onboarding");
+    // In a real app, you would:
+    // 1. Authenticate with backend
+    // 2. Store user session/token
+    // 3. Get user role
+    // 4. Check if user has completed onboarding
+    
+    // For demo purposes, we'll check if this is a returning user with a role
+    const hasExistingRole = localStorage.getItem("userRole");
+    
+    if (hasExistingRole) {
+      // If the user has already selected a role, redirect to their dashboard
+      navigate(`/dashboard/${hasExistingRole}`);
+    } else {
+      // If this is their first login, redirect to onboarding for role selection
+      navigate("/onboarding");
+    }
   };
 
   return (

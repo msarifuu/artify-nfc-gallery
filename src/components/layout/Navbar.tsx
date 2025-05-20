@@ -3,11 +3,37 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, User, LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import UserMenu from "./UserMenu";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  
+  // Mock authentication state - this would be replaced with actual authentication
+  // In a real app, this would come from your auth context or state management
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState<"artist" | "gallery" | "collector" | "viewer">("viewer");
+  const [userName, setUserName] = useState("John Doe");
+
+  // For demo purposes, check URL to simulate logged in state
+  // In a real app, this would be handled by your auth system
+  useEffect(() => {
+    // If on dashboard, simulate logged in
+    const isDashboard = location.pathname.includes('/dashboard');
+    setIsLoggedIn(isDashboard);
+    
+    // Extract user role from URL path for demo
+    if (location.pathname.includes('/dashboard/artist')) {
+      setUserRole('artist');
+    } else if (location.pathname.includes('/dashboard/gallery')) {
+      setUserRole('gallery');
+    } else if (location.pathname.includes('/dashboard/collector')) {
+      setUserRole('collector');
+    } else if (location.pathname.includes('/dashboard/viewer')) {
+      setUserRole('viewer');
+    }
+  }, [location]);
 
   // Handle scroll effect for navbar
   useEffect(() => {
@@ -73,20 +99,26 @@ const Navbar = () => {
             ))}
           </div>
 
-          {/* Auth Buttons - Desktop */}
+          {/* Auth Buttons or User Menu - Desktop */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" size="sm" asChild>
-              <Link to="/login">
-                <LogIn className="mr-2 h-4 w-4" />
-                Login
-              </Link>
-            </Button>
-            <Button size="sm" className="bg-amber-500 hover:bg-amber-600" asChild>
-              <Link to="/signup">
-                <User className="mr-2 h-4 w-4" />
-                Sign Up
-              </Link>
-            </Button>
+            {isLoggedIn ? (
+              <UserMenu userRole={userRole} userName={userName} />
+            ) : (
+              <>
+                <Button variant="outline" size="sm" asChild>
+                  <Link to="/login">
+                    <LogIn className="mr-2 h-4 w-4" />
+                    Login
+                  </Link>
+                </Button>
+                <Button size="sm" className="bg-amber-500 hover:bg-amber-600" asChild>
+                  <Link to="/signup">
+                    <User className="mr-2 h-4 w-4" />
+                    Sign Up
+                  </Link>
+                </Button>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -124,18 +156,40 @@ const Navbar = () => {
                 </Link>
               ))}
               <div className="flex flex-col space-y-2 pt-4 border-t border-border">
-                <Button variant="outline" size="sm" className="justify-start" asChild>
-                  <Link to="/login">
-                    <LogIn className="mr-2 h-4 w-4" />
-                    Login
-                  </Link>
-                </Button>
-                <Button size="sm" className="bg-amber-500 hover:bg-amber-600 justify-start" asChild>
-                  <Link to="/signup">
-                    <User className="mr-2 h-4 w-4" />
-                    Sign Up
-                  </Link>
-                </Button>
+                {isLoggedIn ? (
+                  <div className="flex justify-between items-center p-3">
+                    <div className="flex items-center">
+                      <div className="w-8 h-8 rounded-full bg-gray-200 mr-3"></div>
+                      <div>
+                        <p className="text-sm font-medium">{userName}</p>
+                        <p className="text-xs text-muted-foreground">{userRole}</p>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Button size="sm" variant="outline" className="w-full justify-start" asChild>
+                        <Link to={`/dashboard/${userRole}`}>Dashboard</Link>
+                      </Button>
+                      <Button size="sm" variant="ghost" className="w-full justify-start text-destructive" asChild>
+                        <Link to="/">Log Out</Link>
+                      </Button>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    <Button variant="outline" size="sm" className="justify-start" asChild>
+                      <Link to="/login">
+                        <LogIn className="mr-2 h-4 w-4" />
+                        Login
+                      </Link>
+                    </Button>
+                    <Button size="sm" className="bg-amber-500 hover:bg-amber-600 justify-start" asChild>
+                      <Link to="/signup">
+                        <User className="mr-2 h-4 w-4" />
+                        Sign Up
+                      </Link>
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>

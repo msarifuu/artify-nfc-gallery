@@ -65,7 +65,16 @@ const Onboarding = () => {
     }
 
     // In a real app, you would save the user's role to the backend
-    // For now, we'll just navigate to the appropriate dashboard
+    // For now, we'll just store it in localStorage for demo purposes
+    localStorage.setItem("userRole", selectedRole);
+    
+    // Display success feedback
+    toast({
+      title: "Role selected",
+      description: `You've successfully set up your profile as a ${selectedRole}`,
+    });
+    
+    // Navigate to the appropriate dashboard
     navigate(`/dashboard/${selectedRole}`);
   };
 

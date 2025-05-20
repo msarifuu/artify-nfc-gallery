@@ -3,7 +3,16 @@ import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { motion } from "framer-motion";
-import { ArrowRight, Search, ShieldCheck, Zap } from "lucide-react";
+import { 
+  ArrowRight, 
+  Search, 
+  ShieldCheck, 
+  Zap, 
+  PaintBucket,
+  Building,
+  ShoppingBag,
+  Eye
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import MainLayout from "@/components/layout/MainLayout";
@@ -17,6 +26,37 @@ const Index = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  const roleOptions = [
+    {
+      id: "artist",
+      name: "Artist",
+      description: "Create, showcase, and sell your artwork",
+      icon: PaintBucket,
+      color: "bg-blue-500 hover:bg-blue-600"
+    },
+    {
+      id: "gallery",
+      name: "Gallery",
+      description: "Manage exhibitions and represent artists",
+      icon: Building,
+      color: "bg-amber-500 hover:bg-amber-600"
+    },
+    {
+      id: "collector",
+      name: "Collector",
+      description: "Discover and collect authentic artwork",
+      icon: ShoppingBag,
+      color: "bg-emerald-500 hover:bg-emerald-600"
+    },
+    {
+      id: "viewer",
+      name: "Art Enthusiast",
+      description: "Explore art from around the world",
+      icon: Eye,
+      color: "bg-rose-500 hover:bg-rose-600"
+    }
+  ];
 
   return (
     <MainLayout>
@@ -163,8 +203,43 @@ const Index = () => {
       
       {/* Upcoming Events */}
       <UpcomingEvents />
+
+      {/* Role Selection CTA Section */}
+      <section className="py-16 bg-gray-50 dark:bg-gray-950">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">Join Artify as a...</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Select the role that best describes you and get started with personalized features.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {roleOptions.map((role) => (
+              <div key={role.id} className="flex flex-col">
+                <div className="bg-white dark:bg-gray-900 rounded-lg p-6 shadow-sm flex-1">
+                  <div className="mb-4">
+                    <div className={`w-12 h-12 rounded-full ${role.color.split(' ')[0]} flex items-center justify-center text-white`}>
+                      <role.icon className="h-6 w-6" />
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2">{role.name}</h3>
+                  <p className="text-muted-foreground mb-6">{role.description}</p>
+                  <Button 
+                    className={`w-full ${role.color}`}
+                    asChild
+                  >
+                    <Link to="/signup">
+                      Sign up as {role.name}
+                    </Link>
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
       
-      {/* CTA Section */}
+      {/* General CTA Section */}
       <section className="bg-gradient-to-r from-gray-900 to-black text-white py-20">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
