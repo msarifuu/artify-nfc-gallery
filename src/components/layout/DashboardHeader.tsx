@@ -1,5 +1,6 @@
 
-import { Bell, Search } from "lucide-react";
+import { Bell, Search, Inbox } from "lucide-react";
+import { Link } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,12 +11,33 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import UserMenu from "./UserMenu";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
 
 interface DashboardHeaderProps {
   userRole?: "artist" | "gallery" | "collector" | "viewer";
 }
 
 const DashboardHeader = ({ userRole = "viewer" }: DashboardHeaderProps) => {
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  
+  // Based on role, set appropriate name
+  const getUserName = () => {
+    switch (userRole) {
+      case "artist":
+        return "Maria Rodriguez";
+      case "gallery":
+        return "Modern Art Gallery";
+      case "collector":
+        return "James Wilson";
+      case "viewer":
+      default:
+        return "Sarah Johnson";
+    }
+  };
+
   // Fake notifications for UI demonstration
   const notifications = [
     {
@@ -37,6 +59,15 @@ const DashboardHeader = ({ userRole = "viewer" }: DashboardHeaderProps) => {
       time: "1 day ago",
     },
   ];
+  
+  const handleLogout = () => {
+    toast({
+      title: "Logged out successfully",
+      description: "You have been logged out of your account",
+    });
+    
+    navigate("/");
+  };
 
   return (
     <header className="border-b border-border h-16 px-4 flex items-center justify-between">
@@ -48,7 +79,13 @@ const DashboardHeader = ({ userRole = "viewer" }: DashboardHeaderProps) => {
         />
       </div>
 
-      <div className="flex items-center gap-2 ml-auto">
+      <div className="flex items-center gap-4 ml-auto">
+        <Button variant="outline" size="icon" className="relative" asChild>
+          <Link to="/inbox">
+            <Inbox className="h-4 w-4" />
+            <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-amber-500"></span>
+          </Link>
+        </Button>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon" className="relative">
@@ -78,6 +115,12 @@ const DashboardHeader = ({ userRole = "viewer" }: DashboardHeaderProps) => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+        
+        <UserMenu 
+          userRole={userRole} 
+          userName={getUserName()}
+          onLogout={handleLogout}
+        />
       </div>
     </header>
   );

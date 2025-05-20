@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   User,
   LogOut,
@@ -10,6 +10,7 @@ import {
   Building,
   ShoppingBag,
   Eye,
+  Inbox,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -22,14 +23,22 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 interface UserMenuProps {
   userRole?: "artist" | "gallery" | "collector" | "viewer";
   userName?: string;
+  onLogout?: () => void;
 }
 
-const UserMenu = ({ userRole = "viewer", userName = "Guest User" }: UserMenuProps) => {
+const UserMenu = ({ 
+  userRole = "viewer", 
+  userName = "Guest User",
+  onLogout 
+}: UserMenuProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
   // Get initials for avatar fallback
   const getInitials = (name: string) => {
@@ -66,6 +75,22 @@ const UserMenu = ({ userRole = "viewer", userName = "Guest User" }: UserMenuProp
     return role.charAt(0).toUpperCase() + role.slice(1);
   };
 
+  const handleLogout = () => {
+    if (onLogout) {
+      onLogout();
+    }
+    
+    // Show success toast
+    toast({
+      title: "Logged out successfully",
+      description: "You have been logged out of your account",
+    });
+    
+    // Redirect to home page
+    navigate("/");
+    setIsOpen(false);
+  };
+
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild>
@@ -89,9 +114,21 @@ const UserMenu = ({ userRole = "viewer", userName = "Guest User" }: UserMenuProp
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
           <DropdownMenuItem asChild>
+            <Link to={`/profile/${userRole}`} className="cursor-pointer">
+              <User className="mr-2 h-4 w-4" />
+              <span>My Profile</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
             <Link to={getDashboardLink()} className="cursor-pointer">
               {getRoleIcon()}
               <span>Dashboard</span>
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link to="/inbox" className="cursor-pointer">
+              <Inbox className="mr-2 h-4 w-4" />
+              <span>Messages</span>
             </Link>
           </DropdownMenuItem>
           <DropdownMenuItem asChild>
@@ -102,11 +139,12 @@ const UserMenu = ({ userRole = "viewer", userName = "Guest User" }: UserMenuProp
           </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link to="/" className="cursor-pointer text-destructive">
-            <LogOut className="mr-2 h-4 w-4" />
-            <span>Log out</span>
-          </Link>
+        <DropdownMenuItem 
+          onClick={handleLogout}
+          className="cursor-pointer text-destructive"
+        >
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

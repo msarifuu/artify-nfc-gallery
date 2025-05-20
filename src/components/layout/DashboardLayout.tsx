@@ -1,6 +1,6 @@
 
 import { ReactNode, useState } from "react";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import DashboardHeader from "./DashboardHeader";
 import DashboardSidebar from "./DashboardSidebar";
 import { useToast } from "@/hooks/use-toast";
@@ -16,6 +16,7 @@ const DashboardLayout = ({ children, userRole = "viewer" }: DashboardLayoutProps
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const { toast } = useToast();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Get page title based on pathname
   const getPageTitle = () => {

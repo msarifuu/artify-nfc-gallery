@@ -1,14 +1,18 @@
 
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X, User, LogIn } from "lucide-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Menu, X, User, LogIn, Bell, Inbox } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import UserMenu from "./UserMenu";
+import { useToast } from "@/hooks/use-toast";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   
   // Mock authentication state - this would be replaced with actual authentication
   // In a real app, this would come from your auth context or state management
@@ -21,17 +25,22 @@ const Navbar = () => {
   useEffect(() => {
     // If on dashboard, simulate logged in
     const isDashboard = location.pathname.includes('/dashboard');
-    setIsLoggedIn(isDashboard);
+    const isProfile = location.pathname.includes('/profile');
+    setIsLoggedIn(isDashboard || isProfile);
     
     // Extract user role from URL path for demo
-    if (location.pathname.includes('/dashboard/artist')) {
+    if (location.pathname.includes('/artist') || location.pathname.includes('/dashboard/artist')) {
       setUserRole('artist');
-    } else if (location.pathname.includes('/dashboard/gallery')) {
+      setUserName('Maria Rodriguez');
+    } else if (location.pathname.includes('/gallery') || location.pathname.includes('/dashboard/gallery')) {
       setUserRole('gallery');
-    } else if (location.pathname.includes('/dashboard/collector')) {
+      setUserName('Modern Art Gallery');
+    } else if (location.pathname.includes('/collector') || location.pathname.includes('/dashboard/collector')) {
       setUserRole('collector');
-    } else if (location.pathname.includes('/dashboard/viewer')) {
+      setUserName('James Wilson');
+    } else if (location.pathname.includes('/viewer') || location.pathname.includes('/dashboard/viewer')) {
       setUserRole('viewer');
+      setUserName('Sarah Johnson');
     }
   }, [location]);
 
@@ -64,6 +73,15 @@ const Navbar = () => {
     { name: "Fairs & Events", path: "/events" },
     { name: "Contact", path: "/contact" },
   ];
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    toast({
+      title: "Logged out successfully",
+      description: "You have been logged out of your account",
+    });
+    navigate("/");
+  };
 
   return (
     <nav
@@ -102,7 +120,25 @@ const Navbar = () => {
           {/* Auth Buttons or User Menu - Desktop */}
           <div className="hidden md:flex items-center space-x-4">
             {isLoggedIn ? (
-              <UserMenu userRole={userRole} userName={userName} />
+              <div className="flex items-center space-x-2">
+                <Button variant="ghost" size="icon" asChild className="relative">
+                  <Link to="/inbox">
+                    <Inbox className="h-5 w-5" />
+                    <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-amber-500"></span>
+                  </Link>
+                </Button>
+                <Button variant="ghost" size="icon" asChild className="relative">
+                  <Link to="/notifications">
+                    <Bell className="h-5 w-5" />
+                    <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-amber-500"></span>
+                  </Link>
+                </Button>
+                <UserMenu 
+                  userRole={userRole} 
+                  userName={userName}
+                  onLogout={handleLogout}
+                />
+              </div>
             ) : (
               <>
                 <Button variant="outline" size="sm" asChild>
@@ -157,22 +193,46 @@ const Navbar = () => {
               ))}
               <div className="flex flex-col space-y-2 pt-4 border-t border-border">
                 {isLoggedIn ? (
-                  <div className="flex justify-between items-center p-3">
-                    <div className="flex items-center">
-                      <div className="w-8 h-8 rounded-full bg-gray-200 mr-3"></div>
-                      <div>
-                        <p className="text-sm font-medium">{userName}</p>
-                        <p className="text-xs text-muted-foreground">{userRole}</p>
+                  <div className="flex flex-col space-y-2">
+                    <div className="flex justify-between items-center p-3">
+                      <div className="flex items-center">
+                        <Avatar className="w-8 h-8 mr-3">
+                          <AvatarImage src="/placeholder.svg" alt={userName} />
+                          <AvatarFallback>{userName.substring(0, 2).toUpperCase()}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <p className="text-sm font-medium">{userName}</p>
+                          <p className="text-xs text-muted-foreground capitalize">{userRole}</p>
+                        </div>
                       </div>
                     </div>
-                    <div className="space-y-2">
-                      <Button size="sm" variant="outline" className="w-full justify-start" asChild>
-                        <Link to={`/dashboard/${userRole}`}>Dashboard</Link>
-                      </Button>
-                      <Button size="sm" variant="ghost" className="w-full justify-start text-destructive" asChild>
-                        <Link to="/">Log Out</Link>
-                      </Button>
-                    </div>
+                    <Button size="sm" variant="outline" className="justify-start" asChild>
+                      <Link to="/inbox">
+                        <Inbox className="mr-2 h-4 w-4" />
+                        Messages
+                      </Link>
+                    </Button>
+                    <Button size="sm" variant="outline" className="justify-start" asChild>
+                      <Link to="/notifications">
+                        <Bell className="mr-2 h-4 w-4" />
+                        Notifications
+                      </Link>
+                    </Button>
+                    <Button size="sm" variant="outline" className="justify-start" asChild>
+                      <Link to={`/dashboard/${userRole}`}>
+                        <User className="mr-2 h-4 w-4" />
+                        Dashboard
+                      </Link>
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="ghost" 
+                      className="justify-start text-destructive"
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="mr-2 h-4 w-4" />
+                      Log Out
+                    </Button>
                   </div>
                 ) : (
                   <>
